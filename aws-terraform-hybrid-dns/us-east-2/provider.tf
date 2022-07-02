@@ -9,6 +9,6 @@
 # $ export AWS_PROFILE='<your aws account profile>'
 
 provider "aws" {
- region = "us-east-2"
- profile = "default"
+  region  = var.region
+  profile = "default"
 }
