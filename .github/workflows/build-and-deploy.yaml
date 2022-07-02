@@ -14,9 +14,9 @@ jobs:
   build:
     name: Directory
     runs-on: ubuntu-latest
-    permissions: #write-all
-      id-token: write # required to use OIDC authentication
-      contents: read # required to checkout the code from the repo
+    permissions: write-all
+#      id-token: write # required to use OIDC authentication
+#      contents: read # required to checkout the code from the repo
     strategy:
       fail-fast: false
       matrix:
@@ -35,18 +35,18 @@ jobs:
         working-directory: ${{ matrix.directory }}
       
     steps:
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-action-role
-         role-duration-seconds: 900 # the ttl of the session, in seconds.
-         aws-region: us-east-1 # use your region here.
 #      - name: configure aws credentials
 #        uses: aws-actions/configure-aws-credentials@v1
 #        with:
-#          aws-region: us-east-1
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-action-role
+#         role-duration-seconds: 900 # the ttl of the session, in seconds.
+#         aws-region: us-east-1 # use your region here.
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Terraform
