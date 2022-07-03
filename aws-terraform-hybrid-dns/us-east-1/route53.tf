@@ -16,3 +16,19 @@ resource "aws_route53_record" "awsdnsm4lcomweb" {
     aws_instance.awsec2b.private_ip
   ]
 }
+
+resource "aws_route53_resolver_endpoint" "m4linbound" {
+  name      = "m4linbound"
+  direction = "INBOUND"
+
+  security_group_ids = [aws_security_group.AWSSecurityGroup.id]
+
+  ip_address {
+    subnet_id = aws_subnet.micros4l-private-a.id
+  }
+
+  ip_address {
+    subnet_id = aws_subnet.micros4l-private-b.id
+  }
+
+}

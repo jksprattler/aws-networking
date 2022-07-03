@@ -1,9 +1,52 @@
+provider "aws" {
+  alias  = "accepter"
+  region = "us-east-2"
+}
+
 resource "aws_vpc" "awsvpc" {
   cidr_block           = "10.10.0.0/16"
   enable_dns_support   = "true"
   enable_dns_hostnames = "true"
   tags = {
     Name = "micros4l-aws"
+  }
+}
+
+# VPC Peering connection from us-east-1 to us-east-2
+resource "aws_vpc_peering_connection" "owner" {
+  vpc_id      = aws_vpc.awsvpc.id
+  peer_vpc_id = var.accepter_vpc_id
+  peer_region = "us-east-2"
+  auto_accept = false
+  lifecycle {
+    ignore_changes = [
+      peer_vpc_id,
+    ]
+  }
+}
+
+resource "aws_vpc_peering_connection_accepter" "accepter" {
+  vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+  auto_accept               = true
+  provider                  = aws.accepter
+}
+
+# VPC Peering routes
+resource "aws_route" "owner" {
+  route_table_id            = aws_route_table.micros4l-aws-rt.id
+  destination_cidr_block    = "192.168.10.0/24"
+  vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+}
+
+resource "aws_route" "accepter" {
+  route_table_id            = var.accepter_route_table_id
+  destination_cidr_block    = aws_vpc.awsvpc.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+  provider                  = aws.accepter
+    lifecycle {
+    ignore_changes = [
+      route_table_id,
+    ]
   }
 }
 
