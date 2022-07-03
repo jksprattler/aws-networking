@@ -89,13 +89,13 @@ resource "aws_security_group" "OnPremSecurityGroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  #  egress {
-  #    description = "Allow tcp DNS OUT"
-  #    from_port   = 53
-  #    to_port     = 53
-  #    protocol    = "tcp"
-  #    cidr_blocks = ["0.0.0.0/0"]
-  #  }  
+  egress {
+    description = "Allow tcp DNS OUT"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }  
 
   ingress {
     description = "Allow udp DNS IN"
@@ -105,13 +105,13 @@ resource "aws_security_group" "OnPremSecurityGroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  #  egress {
-  #    description = "Allow udp DNS OUT"
-  #    from_port   = 53
-  #    to_port     = 53
-  #    protocol    = "udp"
-  #    cidr_blocks = ["0.0.0.0/0"]
-  #  }  
+  egress {
+    description = "Allow udp DNS OUT"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }  
 
   ingress {
     from_port   = -1
