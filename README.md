@@ -9,8 +9,6 @@
 │   │       ├── provider.tf
 │   │       ├── roles.tf
 │   │       ├── s3.tf
-│   │       ├── terraform.tfstate
-│   │       └── terraform.tfstate.backup
 │   ├── us-east-1
 │   │   ├── backend.tf
 │   │   ├── ec2.tf
