@@ -43,7 +43,7 @@ resource "aws_route" "accepter" {
   destination_cidr_block    = aws_vpc.awsvpc.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
   provider                  = aws.accepter
-    lifecycle {
+  lifecycle {
     ignore_changes = [
       route_table_id,
     ]
@@ -132,13 +132,13 @@ resource "aws_security_group" "AWSSecurityGroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  #  egress {
-  #    description = "Allow tcp DNS OUT"
-  #    from_port   = 53
-  #    to_port     = 53
-  #    protocol    = "tcp"
-  #    cidr_blocks = ["0.0.0.0/0"]
-  #  }   
+  egress {
+    description = "Allow tcp DNS OUT"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }   
 
   ingress {
     description = "Allow udp DNS IN"
@@ -148,13 +148,13 @@ resource "aws_security_group" "AWSSecurityGroup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  #  egress {
-  #    description = "Allow udp DNS OUT"
-  #    from_port   = 53
-  #    to_port     = 53
-  #    protocol    = "udp"
-  #    cidr_blocks = ["0.0.0.0/0"]
-  #  }    
+  egress {
+    description = "Allow udp DNS OUT"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }    
 
   ingress {
     from_port   = -1
