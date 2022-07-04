@@ -61,7 +61,7 @@ resource "aws_route53_resolver_rule" "m4loutbound_fwd" {
 
   target_ip {
     ip = var.onpremdnsb_priv_ip
-  } 
+  }
 }
 
 resource "aws_route53_resolver_rule_association" "m4loutbound_fwd_rule" {
