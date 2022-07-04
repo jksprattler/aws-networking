@@ -138,7 +138,7 @@ resource "aws_security_group" "AWSSecurityGroup" {
     to_port     = 53
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  }   
+  }
 
   ingress {
     description = "Allow udp DNS IN"
@@ -154,7 +154,7 @@ resource "aws_security_group" "AWSSecurityGroup" {
     to_port     = 53
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
-  }    
+  }
 
   ingress {
     from_port   = -1
