@@ -10,59 +10,88 @@ on:
       - master
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 
+env:
+  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
   build:
-    name: Directory
+    name: build
     runs-on: ubuntu-latest
-    permissions: write-all
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+        
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+        
+        continue-on-error: true
+        
+#    permissions: write-all
 #      id-token: write # required to use OIDC authentication
 #      contents: read # required to checkout the code from the repo
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - directory: aws-terraform-hybrid-dns/global/iam
-            tf_ver: 1.2.3
-            auto_apply: no
-          - directory: aws-terraform-hybrid-dns/us-east-1
-            tf_ver: 1.2.3
-            auto_apply: no
-          - directory: aws-terraform-hybrid-dns/us-east-2
-            tf_ver: 1.2.3
-            auto_apply: no
-    defaults:
-      run:
-        working-directory: ${{ matrix.directory }}
-      
-    steps:
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        include:
+#          - directory: aws-terraform-hybrid-dns/global/iam
+#            tf_ver: 1.2.3
+#            auto_apply: no
+#          - directory: aws-terraform-hybrid-dns/us-east-1
+#            tf_ver: 1.2.3
+#            auto_apply: no
+#          - directory: aws-terraform-hybrid-dns/us-east-2
+#            tf_ver: 1.2.3
+#            auto_apply: no
+#    defaults:
+#      run:
+#        working-directory: ${{ matrix.directory }}
+#      
+#    steps:
 #      - name: configure aws credentials
 #        uses: aws-actions/configure-aws-credentials@v1
 #        with:
 #         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-action-role
 #         role-duration-seconds: 900 # the ttl of the session, in seconds.
 #         aws-region: us-east-1 # use your region here.
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: ${{ matrix.tf_ver }}
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
-      - name: Terraform Init
-        id: init
-        run: terraform init
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -detailed-exitcode -out=build.plan
-        continue-on-error: true
+#      - name: configure aws credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          aws-region: us-east-1
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v1
+#        with:
+#          terraform_version: ${{ matrix.tf_ver }}
+#      - name: Terraform Format
+#        id: fmt
+#        run: terraform fmt -check
+#      - name: Terraform Init
+#        id: init
+#        run: terraform init
+#      - name: Terraform Validate
+#        id: validate
+#        run: terraform validate
+#      - name: Terraform Plan
+#        id: plan
+#        run: terraform plan -detailed-exitcode -out=build.plan
+#        continue-on-error: true
