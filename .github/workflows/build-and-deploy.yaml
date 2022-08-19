@@ -24,7 +24,10 @@ jobs:
         include:
          - directory: aws-terraform-hybrid-dns/global/iam
            tf_ver: 1.2.3
-           auto_apply: no
+           auto_apply: no           
+    defaults:
+       run:
+         working-directory: ${{ matrix.directory }}         
     
     steps:
       - name: Checkout
