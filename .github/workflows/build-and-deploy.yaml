@@ -18,6 +18,14 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+         - directory: aws-terraform-hybrid-dns/global/iam
+           tf_ver: 1.2.3
+           auto_apply: no
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
