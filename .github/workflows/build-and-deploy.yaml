@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-         - directory: aws-terraform-hybrid-dns/global/iam
+         - directory: aws-terraform-hybrid-dns/us-east-1
            tf_ver: 1.2.3
            auto_apply: no           
     defaults:
