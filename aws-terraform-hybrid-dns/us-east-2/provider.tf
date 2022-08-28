@@ -9,5 +9,5 @@
 # $ export AWS_PROFILE='<your aws account profile>'
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.region
 }
